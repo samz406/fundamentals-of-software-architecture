@@ -1,4 +1,4 @@
-# fundamentals-of-software-architecture 学习笔记
+<img width="586" alt="image" src="https://github.com/user-attachments/assets/50e192f2-37e1-4dfa-a134-d49d86467563"># fundamentals-of-software-architecture 学习笔记
 
 ## 目录
 
@@ -898,5 +898,82 @@ Netflix的混沌工程是健壮函数的一个有趣例子。他们创建了混�
 管道架构在成本、简单性和模块化方面表现突出，但在可部署性、可测试性、弹性和可扩展性方面得分较低。这是因为尽管管道架构通过过滤器的独立性实现了一定程度的模块化，但它通常以单体部署为基础，带来了与分布式架构相比的复杂性和部署风险​​。特别是在应对高并发和大规模数据处理时，由于其单体特性，管道架构的扩展性受到限制​​。
 
 
+### 第11章 管道架构
 
+### 拓扑结构
+
+
+<img width="600" alt="image" src="https://github.com/user-attachments/assets/1954acee-87e3-4f51-9638-00d20daf632d">
+
+微内核架构是一种相对简单的单体架构，由两个主要部分组成：核心系统和插件组件。应用逻辑被分为独立的插件组件和基本的核心系统，从而提供了可扩展性、适应性和应用功能及自定义处理逻辑的隔离 。
+
+### 核心系统
+
+核心系统被定义为运行系统所需的最小功能集合。例如，Eclipse IDE的核心系统仅包含基本的文本编辑功能，如打开文件、修改文本和保存文件。只有在添加插件后，Eclipse才开始成为一个可用的产品。核心系统的另一个定义是“理想路径”，即应用程序中的一般处理流程，几乎没有或完全没有自定义处理。通过将核心系统的环形复杂性移除并放入单独的插件组件中，可以实现更好的可扩展性和可维护性，同时也提高了可测试性 。
+
+### 实现方式
+
+
+<img width="586" alt="image" src="https://github.com/user-attachments/assets/0f982fda-0243-4cf7-9623-328b389a906c">
+
+
+核心系统可以实现为分层架构或模块化单体架构，有时甚至可以将核心系统拆分为单独部署的领域服务，每个领域服务包含特定领域的插件组件 。
+
+### 插件组件
+
+插件组件是独立的，包含专门的处理、附加功能和用于增强或扩展核心系统的自定义代码的独立组件。插件组件用于隔离高度不稳定的代码，创建更好的可维护性和可测试性。理想情况下，插件组件应彼此独立且没有相互依赖 。
+
+### 插件通信
+
+
+- Shared library plug-in implementation
+  
+<img width="594" alt="image" src="https://github.com/user-attachments/assets/3cec987f-c0a7-4fae-920d-51236f6c5af6">
+
+
+- Package or namespace plug-in implementation
+
+  <img width="600" alt="image" src="https://github.com/user-attachments/assets/bd041a22-f605-40ca-a6a5-8c790648ff6c">
+
+- Remote plug-in access using REST
+
+<img width="592" alt="image" src="https://github.com/user-attachments/assets/c0c8f82a-b57f-4073-97bb-7c0760c9bfc6">
+
+
+
+- Plug-in components can own their own data store
+
+<img width="618" alt="image" src="https://github.com/user-attachments/assets/f17928d3-cd93-42ce-a83a-16c6cdbc25cd">
+
+
+  
+插件组件与核心系统之间的通信通常是点对点的，这意味着连接插件和核心系统的“管道”通常是对插件组件入口类的方法调用或函数调用。此外，插件组件可以是编译时的或运行时的。运行时插件组件可以在运行时添加或删除，而不需要重新部署核心系统或其他插件 。
+
+
+注册表和合同
+
+注册表 是核心系统用来了解哪些插件模块可用及如何访问它们的工具。它包含每个插件模块的信息，包括名称、数据合同和远程访问协议等。注册表可以是核心系统内部的简单映射结构，也可以是复杂的注册表和发现工具 。
+
+
+### 使用案例
+
+微内核架构在产品和大型业务应用中都有广泛的应用。例如，Eclipse IDE、PMD、Jira和Jenkins等开发和发布工具，网络浏览器如Chrome和Firefox，都是使用微内核架构的典型产品 。
+
+
+
+
+### 微内核架构特性评分
+
+| 特性          | 评分（星级）  |
+| ------------- | ------------- |
+| **总体成本**    | ★★★★☆       |
+| **简单性**      | ★★★★☆       |
+| **可部署性**    | ★★★☆☆       |
+| **可测试性**    | ★★★☆☆       |
+| **可靠性**      | ★★★☆☆       |
+| **可扩展性**    | ★☆☆☆☆       |
+| **弹性**        | ★☆☆☆☆       |
+| **性能**        | ★★★☆☆       |
+| **容错性**      | ★☆☆☆☆       |
+| **可用性**      | ★★☆☆☆       |
 
